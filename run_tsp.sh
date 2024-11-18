@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Define the folder containing the input files
-INPUT_FOLDER="./tsp_input/EUC_2D"
+# Prompt the user to enter the folder path
+read -p "Enter the folder path: " INPUT_FOLDER
 
 # Check if the input folder exists
 if [ ! -d "$INPUT_FOLDER" ]; then
@@ -9,14 +9,16 @@ if [ ! -d "$INPUT_FOLDER" ]; then
     exit 1
 fi
 
-# Iterate over all files in the input folder
-for file in "$INPUT_FOLDER"/*; do
-    # Check if it is a regular file
-    if [ -f "$file" ]; then
-        echo ""
-        echo "Processing file: $file"
-        ./saida < "$file"
-    else
-        echo "Skipping non-regular file: $file"
+# Iterate over all files in the input folder that end with ".tsp"
+for file in "$INPUT_FOLDER"/*.tsp; do
+    # Check if any .tsp files exist
+    if [ ! -e "$file" ]; then
+        echo "No .tsp files found in folder: $INPUT_FOLDER"
+        break
     fi
+
+    # Process the file
+    echo ""
+    echo "Processing file: $file"
+    ./saida < "$file"
 done

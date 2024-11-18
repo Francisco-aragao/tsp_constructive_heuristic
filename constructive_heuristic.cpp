@@ -117,7 +117,7 @@ int main () {
     int currentCityId = initialCityId;
     double pathCost = 0;
 
-    while (path.size() < numCities) {
+    while ((int) path.size() < numCities) {
 
         double minDistance = 5000000;
         int nextCityId = 0;

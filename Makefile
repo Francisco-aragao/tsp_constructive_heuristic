@@ -15,6 +15,13 @@ all: $(TARGET)
 $(TARGET): $(SRC)
 	$(CXX) $(CXXFLAGS) $(SRC) -o $(TARGET)
 
+# Rule to run the program
+run: $(TARGET)
+	./$(TARGET)
+
+all_tests:
+	./run_tsp.sh
+
 # Clean up build artifacts
 clean:
 	rm -f $(TARGET)
