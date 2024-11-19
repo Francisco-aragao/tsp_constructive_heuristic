@@ -1,15 +1,11 @@
-#include "city.hpp"
-#include <algorithm>
 #include <ctime>
-#include <iostream>
-#include <fstream>
-#include <vector>
 #include <string>
-#include <filesystem>
+#include "utils.hpp"
 
 using namespace std;
 namespace fs = std::filesystem;
 
+Utils utils;
 
 void processFile(const string& filename) {
     std::clock_t start;
@@ -50,94 +46,12 @@ void processFile(const string& filename) {
             }
         }
 
-        City initialCity(0, 0, 0, numCities);
-        cities.push_back(initialCity);
+        cities = utils.receiveParameters(inputFile, numCities, DISTANCE_TYPE);
 
-        int id;
-        float x, y;
-        for (int i = 0; i < numCities; i++) {
-            inputFile >> id >> x >> y;
-            City newCity(id, x, y, numCities);
-            cities.push_back(newCity);
 
-            for (auto city : cities) {
-                if (city.getId() == 0)
-                    continue;
+        int initialCityId = utils.findCenterCity(cities, numCities);
 
-                if (city == newCity)
-                    continue;
-
-                if (city.returnDistanceTo(id) != -1)
-                    continue;
-
-                double distance = city.calculateDistanceTo(newCity, DISTANCE_TYPE);
-                city.setDistances(id, distance);
-                newCity.setDistances(city.getId(), distance);
-
-                cities[city.getId()] = city;
-                cities[id] = newCity;
-            }
-        }
-
-        double minDistance = 5000000;
-        int idCenterCity = 0;
-        for (auto city : cities) {
-            if (city.getId() == 0)
-                continue;
-
-            double sum = 0;
-            for (int i = 1; i <= numCities; i++) {
-                if (city.getId() == i)
-                    continue;
-
-                sum += city.returnDistanceTo(i);
-            }
-
-            if (sum < minDistance) {
-                minDistance = sum;
-                idCenterCity = city.getId();
-            }
-        }
-
-        int initialCityId = 1;
-        vector<int> path;
-
-        path.push_back(initialCityId);
-
-        int currentCityId = initialCityId;
-        
-        double pathCost = 0;
-
-        while ((int)path.size() < numCities) {
-            double minDistance = 5000000;
-            int nextCityId = 0;
-
-            for (auto city : cities) {
-                if (city.getId() == 0)
-                    continue;
-
-                if (city.getId() == currentCityId)
-                    continue;
-
-                if (find(path.begin(), path.end(), city.getId()) != path.end())
-                    continue;
-
-                double distance = city.returnDistanceTo(currentCityId);
-                if (distance < minDistance) {
-                    if (minDistance != 5000000)
-                        pathCost -= minDistance;
-
-                    pathCost += distance;
-                    minDistance = distance;
-                    nextCityId = city.getId();
-                }
-            }
-
-            path.push_back(nextCityId);
-            currentCityId = nextCityId;
-        }
-        path.push_back(initialCityId);
-        pathCost += cities[currentCityId].returnDistanceTo(initialCityId);
+        double pathCost = utils.findPath(initialCityId, cities, numCities);
 
         double elapsed = double(std::clock() - start) / CLOCKS_PER_SEC;
 

@@ -3,7 +3,7 @@ CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++17
 
 # Source files
-SRC = constructive_heuristic.cpp city.cpp
+SRC = constructive_heuristic.cpp city.cpp utils.cpp
 
 # Output executable
 TARGET = tsp_constructive_heuristic
