@@ -20,5 +20,5 @@ for file in "$INPUT_FOLDER"/*.tsp; do
     # Process the file
     echo ""
     echo "Processing file: $file"
-    ./saida < "$file"
+    ./tsp_constructive_heuristic < "$file"
 done
