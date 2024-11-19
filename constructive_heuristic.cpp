@@ -1,55 +1,47 @@
 #include <ctime>
 #include <string>
 #include "utils.hpp"
+#include <string>
 
 using namespace std;
 namespace fs = std::filesystem;
 
+const int NUMBER_OF_ITERATIONS = 5;
 Utils utils;
 
-void processFile(const string& filename) {
-    std::clock_t start;
+void processFile(const string& filename, bool useCenterCity) {
+
     double totalPathCost = 0;
     double totalElapsedTime = 0;
+    
+    std::clock_t start;
 
-    // Read the file 5 times
-    for (int iteration = 0; iteration < 5; ++iteration) {
+    // collect results for 5 iterations and calculate the average
+    for (int iteration = 0; iteration < NUMBER_OF_ITERATIONS; ++iteration) {
 
-        string DISTANCE_TYPE;
-        string info;
+        string distance_type;
         int numCities;
         vector<City> cities;
         ifstream inputFile(filename);
+
         if (!inputFile.is_open()) {
             cerr << "Failed to open file: " << filename << endl;
             return;
         }
 
         start = std::clock();
-        while (info != "NODE_COORD_SECTION" && inputFile >> info) {
-            if (info == "DIMENSION:") {
-                inputFile >> info;
-                numCities = stoi(info);
-            } else if (info == "DIMENSION") {
-                inputFile >> info; // reading ':'
-                inputFile >> info;
-                numCities = stoi(info);
-            }
 
-            if (info == "EDGE_WEIGHT_TYPE:") {
-                inputFile >> info;
-                DISTANCE_TYPE = info;
-            } else if (info == "EDGE_WEIGHT_TYPE") {
-                inputFile >> info; // reading ':'
-                inputFile >> info;
-                DISTANCE_TYPE = info;
-            }
-        }
+        vector<string> res(2);
+        res = utils.findPathInfo(inputFile);
 
-        cities = utils.receiveParameters(inputFile, numCities, DISTANCE_TYPE);
+        numCities = stoi(res[0]);
+        distance_type = res[1];
 
+        cities = utils.receiveCoordinatesParameters(inputFile, numCities, distance_type);
 
-        int initialCityId = utils.findCenterCity(cities, numCities);
+        int initialCityId = 1;
+        if ( useCenterCity )
+            initialCityId = utils.findCenterCity(cities, numCities);
 
         double pathCost = utils.findPath(initialCityId, cities, numCities);
 
@@ -59,28 +51,44 @@ void processFile(const string& filename) {
         totalElapsedTime += elapsed;
     }
 
-    // Calculate and display the average results
+    // calculate the average path cost and elapsed time
 
     double avgPathCost = totalPathCost / 5;
     double avgElapsedTime = totalElapsedTime / 5;
 
+    vector<int> path = utils.getPath();
+
+    cout << endl;
     cout << "Results for " << filename << ":\n";
     cout << "Average Path Cost: " << avgPathCost << "\n";
     cout << "Average Elapsed Time: " << avgElapsedTime << " seconds\n";
+    cout << "Path: ";
+    for (int i = 0; i < (int) path.size(); i++) {
+        cout << path[i] << " ";
+    }
+    cout << endl;
 }
 
 int main(int argc, char* argv[]) {
-    if (argc != 2) {
-        cerr << "Usage: " << argv[0] << " <folder_path>" << endl;
+
+    // receive input folder path and type of city to start in the command line
+    if (argc != 3) {
+        cerr << "Usage: " << argv[0] << " <folder_path>" << " <use_center_city>" << endl;
+        cerr << "Example: " << argv[0] << " ./tsp_files 1 -> using center city" << endl;
+        cerr << "Example: " << argv[0] << " ./tsp_files 0 -> using first city" << endl;
         return 1;
     }
 
     string folderPath = argv[1];
+    bool useCenterCity = stoi(argv[2]);
+
+    cout << folderPath << endl;
+    cout << useCenterCity << endl;
 
     // Process all .tsp files in the folder
     for (const auto& entry : fs::directory_iterator(folderPath)) {
-        if (entry.path().extension() == ".tsp") {
-            processFile(entry.path().string());
+        if (entry.path().extension() == ".tsp") { // just open .tsp files
+            processFile(entry.path().string(), useCenterCity);
         }
     }
 

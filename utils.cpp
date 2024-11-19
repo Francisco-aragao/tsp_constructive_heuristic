@@ -41,6 +41,8 @@ double Utils::findPath(int initialCityId, vector<City> cities, int numCities) {
     path.push_back(initialCityId);
     pathCost += cities[currentCityId].returnDistanceTo(initialCityId);
 
+    this->path = path;
+
     return pathCost;
 }
 
@@ -68,7 +70,7 @@ int Utils::findCenterCity(vector<City> cities, int numCities) {
     return idCenterCity;
 }
 
-vector<City> Utils::receiveParameters(ifstream& inputFile, int numCities, string DISTANCE_TYPE) {
+vector<City> Utils::receiveCoordinatesParameters(ifstream& inputFile, int numCities, string DISTANCE_TYPE) {
     
     std::vector<City> cities;
 
@@ -102,4 +104,43 @@ vector<City> Utils::receiveParameters(ifstream& inputFile, int numCities, string
     }
 
     return cities;
+}
+
+vector<string> Utils::findPathInfo(ifstream& inputFile) {
+
+    string info;
+
+    string numCities;
+    string distance_type;
+
+    while (info != "NODE_COORD_SECTION") {
+
+        inputFile >> info;
+        
+        if (info == "DIMENSION:") {
+            inputFile >> info;
+
+            numCities =info;
+        } else if (info == "DIMENSION") {
+            inputFile >> info; // reading ':'
+            inputFile >> info;
+            numCities = info;
+        }
+
+        if (info == "EDGE_WEIGHT_TYPE:") {
+            inputFile >> info;
+            distance_type = info;
+        } else if (info == "EDGE_WEIGHT_TYPE") {
+            inputFile >> info; // reading ':'
+            inputFile >> info;
+            distance_type = info;
+        }
+    }
+
+
+    vector<string> results;
+    results.push_back(numCities);
+    results.push_back(distance_type);
+
+    return results;
 }

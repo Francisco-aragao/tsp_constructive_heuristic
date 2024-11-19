@@ -2,26 +2,24 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++17
 
-# Source files
+# cpp files
 SRC = constructive_heuristic.cpp city.cpp utils.cpp
 
-# Output executable
+# name of the executable
 TARGET = tsp_constructive_heuristic
 
-# Build target
+# build target
 all: $(TARGET)
 
-# Rule to build the executable
+# rule to build the executable
 $(TARGET): $(SRC)
 	$(CXX) $(CXXFLAGS) $(SRC) -o $(TARGET)
 
 # Rule to run the program
 run: $(TARGET)
-	./$(TARGET)
+	@echo "Running: ./$(TARGET) $(ARGS)"
+	./$(TARGET) $(ARGS)
 
-all_tests:
-	./run_tsp.sh
-
-# Clean up build artifacts
+# clean executable
 clean:
 	rm -f $(TARGET)

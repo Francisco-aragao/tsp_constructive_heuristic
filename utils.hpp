@@ -10,10 +10,14 @@
 using namespace std;
 
 class Utils {
+    private:
+        vector<int> path;
     public:        
+        vector<int> getPath() {return path;};
         double findPath(int initialCityId, vector<City> cities, int numCities);
         int findCenterCity(vector<City> cities, int numCities);
-        vector<City> receiveParameters(ifstream& inputFile, int numCities, string DISTANCE_TYPE);
+        vector<City> receiveCoordinatesParameters(ifstream& inputFile, int numCities, string DISTANCE_TYPE);
+        vector<string> findPathInfo(ifstream& inputFile);
 
 };
 
