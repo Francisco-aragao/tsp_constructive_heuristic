@@ -1,13 +1,14 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
-#include <cmath>
 #include <algorithm>
 #include <fstream>
 #include <filesystem>
 #include "city.hpp"
 
 using namespace std;
+
+// class to handle utility functions for reading and processing input data, and calculating the path
 
 class Utils {
     private:

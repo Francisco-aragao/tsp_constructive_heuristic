@@ -1,0 +1,155 @@
+\documentclass[10pt]{extarticle} % Usa fonte de 10pt
+\usepackage{graphicx} % Required for inserting images
+\usepackage{float}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{minted}
+\setminted{
+  breaklines=true, % Permite quebra de linha
+  breakanywhere=true, % Permite quebra em qualquer posição
+  fontsize=\small % Define tamanho da fonte para ajudar com overflow
+}
+
+\geometry{margin=1in}
+
+\title{Trabalho de Implementação 1 - Heurísticas e Metaheurísticas}
+\author{Francisco Teixeira Rocha Aragão - 2021031726}
+
+
+\date{Data de entrega: 21 de novembro de 2024}
+
+\begin{document}
+
+\maketitle
+
+\section{Introdução}
+
+O presente trabalho busca resolver de maneira aproximada o problema do caixeiro viajante (TSP), fazendo uso de heurísticas gulosas em sua implementação. Como o problema pertence a classe NP, faz-se necessário o uso de tais estratégias, sendo feito especificamente uma heurística gulosa no trabalho. Abaixo encontra-se mais informações sobre a implementação além dos resultados obtidos.
+
+\section{Heurística utilizada}
+
+Primeiramente sobre a heurística utilizada, a estratégia implementada no trabalho refere-se a heurísticas construtivas, ou seja, heurísticas em que a solução é construída do zero, desde o início até a resolução do problema. Iniciando-se assim de uma solução vazia, obtendo-se uma solução parcial a cada iteração em que ao final transforma-se em uma solução completa válida.
+
+Desse modo, a estratégia utilizada foi baseada em uma abordagem gulosa, em que a cada ponto (ou cidade), o próximo trajeto escolhido é aquele com a menor distância. Desse modo, inicia-se a partir de uma cidade (será explicado mais frente), e a cada iteração novas cidades são adicionadas no caminho até todas as cidades serem visitadas, voltando assim ao vértice inicial resolvendo o problema.
+
+Sobre o ponto inicial escolhido, duas abordagens foram implementadas e comparadas: a primeira escolhendo o primeiro nó recebido como cidade inicial, e a segunda escolhendo o nó com a menor distância em relação a todos os outros. A segunda abordagem foi pensada para assim escolher um nó que estivesse mais próximo dos demais, podendo ser um fator que auxilie o desempenho do algoritmo. 
+
+\section{Execução e Resultados}
+
+O código foi desenvolvido em C++ e os testes foram realizados em uma máquina com debian 12, 16GB de ram e processador I5-11 geração. Sua execução pode ser realizada com os seguintes comandos:
+
+\begin{minted}{c++}
+// compilação
+make
+
+// limpar arquivos gerados
+make clean
+
+// rodar programa
+make run ARGS="<pasta com instâncias de entrada> <tipo da cidade inicial>
+// <tipo de cidade inicial> = 0 para usar a primeira cidade e 1 para usar cidade central
+\end{minted}
+
+Vale destacar que o arquivo de entrada foi encontrado no site TSPLIB95, presente nas referências no trabalho. Além disso, a execução foi realizada 5 vezes para cada instância, com as médias dos resultados disponível nas tabelas abaixo.
+
+Assim, os resultados obtidos para cada abordagem foram sumarizados nas tabelas 1 e 2. É possível notar que ambas as estratégias obteram resultados semelhantes, com pouca diferença entre o erro em cada abordagem, mesmo que de maneira geral a segunda estratégia baseada no nó geral tenha obtido melhores resultados na média. Os resultados obtidos foram no máximo 50\% piores do que o ótimo (mais especificamente, o maior erro foi de 41.89\%). Em todo caso, o ponto fundamental que pode ser verificado nos resultados refere-se ao tempo de execução, que ficou bem pequeno nas duas abordagens. Mesmo que a estratégia do nó central tenha obtidos tempo ligeiramente maiores, a diferença é praticamente irrelevante.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|} \hline 
+         \textbf{Instância} & \textbf{Ótimo} & \textbf{Custo} & \textbf{Tempo} & \textbf{Erro Percentual (\%)} \\ \hline 
+         att48       & 10628     & 12861    & 0.001903  & 21.00 \\ \hline
+         berlin52    & 7542      & 8980.92  & 0.0010034 & 19.08 \\ \hline 
+         st70        & 675       & 805.531  & 0.0033856 & 19.34 \\ \hline 
+         pr76        & 108159    & 153462   & 0.0022632 & 41.89 \\ \hline 
+         rat99       & 1211      & 1564.72  & 0.0043974 & 29.22 \\ \hline 
+         kroA100     & 21282     & 26856.4  & 0.0044204 & 26.14 \\ \hline 
+         kroB100     & 22141     & 29155    & 0.0043634 & 31.68 \\ \hline 
+         kroC100     & 20749     & 26327.4  & 0.0044004 & 26.89 \\ \hline 
+         kroD100     & 21294     & 26950.5  & 0.0044182 & 26.58 \\ \hline 
+         kroE100     & 22068     & 27587.2  & 0.0043896 & 25.00 \\ \hline 
+         lin105      & 14379     & 20362.8  & 0.00492   & 41.61 \\ \hline 
+         pr124       & 59030     & 69299.4  & 0.0072172 & 17.40 \\ \hline 
+         pr136       & 96772     & 120778   & 0.009604  & 24.81 \\ \hline 
+         pr144       & 58537     & 61650.7  & 0.010979  & 5.32  \\ \hline 
+         kroA150     & 26524     & 33609.9  & 0.0118756 & 26.72 \\ \hline 
+         kroB150     & 26130     & 32825.7  & 0.0121312 & 25.63 \\ \hline 
+         pr152       & 73682     & 85703    & 0.01233   & 16.31 \\ \hline          
+         rat195      & 2323      & 2761.96  & 0.0226642 & 18.90 \\ \hline            
+         kroA200     & 29368     & 35798.4  & 0.0241298 & 21.90 \\ \hline         
+         kroB200     & 29437     & 36981.6  & 0.0243252 & 25.63 \\ \hline 
+    \end{tabular}
+    \caption{Heurística gulosa - Primeiro nó como inicial}
+    \label{tab:my_label}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|} \hline 
+        \textbf{Instância} & \textbf{Ótimo} & \textbf{Custo} & \textbf{Tempo (s)} & \textbf{Erro Percentual} \\ \hline 
+        att48             & 10628          & 12964          & 0.0019           & 21.97\%        \\ \hline
+        berlin52          & 7542           & 9140.13        & 0.0010           & 21.20\%        \\ \hline
+        st70              & 675            & 783.72         & 0.002179         & 16.11\%        \\ \hline
+        pr76              & 108159         & 151142         & 0.0024008        & 39.75\%        \\ \hline
+        rat99             & 1211           & 1493.92        & 0.0043878        & 23.37\%        \\ \hline
+        kroA100           & 21282          & 25781.6        & 0.0044748        & 21.14\%        \\ \hline
+        kroB100           & 22141          & 27208.5        & 0.0046738        & 22.89\%        \\ \hline
+        kroC100           & 20749          & 24173.9        & 0.0045104        & 16.50\%        \\ \hline
+        kroD100           & 21294          & 27695.5        & 0.004607         & 30.06\%        \\ \hline
+        kroE100           & 22068          & 26884.6        & 0.0045522        & 21.82\%        \\ \hline
+        lin105            & 14379          & 19182.4        & 0.005191         & 33.40\%        \\ \hline
+        pr107             & 44303          & 52145.5        & 0.0052502        & 17.71\%        \\ \hline
+        pr124             & 59030          & 68321.4        & 0.0074482        & 15.74\%        \\ \hline
+        pr136             & 96772          & 116045         & 0.0098506        & 20.42\%        \\ \hline
+        pr144             & 58537          & 64161.5        & 0.011302         & 9.61\%         \\ \hline
+        kroA150           & 26524          & 32786.8        & 0.0123896        & 23.62\%        \\ \hline
+        kroB150           & 26130          & 34583.7        & 0.0124628        & 32.37\%        \\ \hline
+        pr152             & 73682          & 80161.3        & 0.0128008        & 8.80\%         \\ \hline
+        rat195            & 2323           & 2830.1         & 0.0231814        & 21.83\%        \\ \hline
+        kroA200           & 29368          & 37701.5        & 0.0246762        & 28.38\%        \\ \hline
+        kroB200           & 29437          & 36893.6        & 0.024664         & 25.33\%        \\ \hline
+    \end{tabular}
+    \caption{Heurística gulosa - Nó central inicial}
+    \label{tab:my_label}
+\end{table}
+
+Sumarizando a comparação dos resultados das diferentes abordagens, temos a tabela 3 que possui a melhor abordagem para cada uma das instâncias. Percebe-se que de maneira geral, a estratégia utilizando o nó central como inicio do caminho performou melhor. Mesmo que a abordagem com o primeiro nó como inicial possuindo vantagem em alguns dos casos maiores, a hipótese é que isso foi causado por propriedades de como as instâncias estão distribuídas, embora mais testes possam ser feitos para comprovar tal fato futuramente.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|} \hline
+\textbf{Instância} & \textbf{Menor Erro Percentual} & \textbf{Abordagem} \\ \hline
+    att48       & 21.01\%   & Primeiro nó como inicial \\ \hline
+    berlin52    & 19.08\%   & Primeiro nó como inicial \\ \hline
+    st70        & 16.11\%   & Nó central inicial       \\ \hline
+    pr76        & 39.75\%   & Nó central inicial       \\ \hline
+    rat99       & 23.37\%   & Nó central inicial       \\ \hline
+    kroA100     & 21.14\%   & Nó central inicial       \\ \hline
+    kroB100     & 22.89\%   & Nó central inicial       \\ \hline
+    kroC100     & 16.50\%   & Nó central inicial       \\ \hline
+    kroD100     & 26.57\%   & Primeiro nó como inicial \\ \hline
+    kroE100     & 21.82\%   & Nó central inicial       \\ \hline
+    lin105      & 33.40\%   & Nó central inicial       \\ \hline
+    pr107       & 17.71\%   & Nó central inicial       \\ \hline
+    pr124       & 15.74\%   & Nó central inicial       \\ \hline
+    pr136       & 20.42\%   & Nó central inicial       \\ \hline
+    pr144       & 5.32\%    & Primeiro nó como inicial \\ \hline
+    kroA150     & 23.62\%   & Nó central inicial       \\ \hline
+    kroB150     & 25.63\%   & Primeiro nó como inicial \\ \hline
+    pr152       & 8.80\%    & Nó central inicial       \\ \hline
+    rat195      & 18.89\%   & Primeiro nó como inicial \\ \hline
+    kroA200     & 21.90\%   & Primeiro nó como inicial \\ \hline
+    kroB200     & 25.33\%   & Nó central inicial       \\ \hline
+\end{tabular}
+\caption{Comparação de abordagens - Menor erro percentual por instância}
+\label{tab:comparison}
+\end{table}
+
+
+\section{Referências}
+
+\noindent \href{http://www.decom.ufop.br/prof/marcone/Disciplinas/InteligenciaComputacional/HeuristicasConstrutivas.pdf}{Slides sobre heurísticas construtivas e heurísticas gulosas}
+
+\noindent \href{http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/}{Formato das instâncias de entrada e resultados ótimos}
+
+\end{document}

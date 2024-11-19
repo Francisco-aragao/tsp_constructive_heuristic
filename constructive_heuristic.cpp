@@ -14,7 +14,7 @@ void processFile(const string& filename, bool useCenterCity) {
     double totalPathCost = 0;
     double totalElapsedTime = 0;
     
-    std::clock_t start;
+    std::clock_t start; // variable to control time management
 
     // collect results for 5 iterations and calculate the average
     for (int iteration = 0; iteration < NUMBER_OF_ITERATIONS; ++iteration) {
@@ -51,7 +51,7 @@ void processFile(const string& filename, bool useCenterCity) {
         totalElapsedTime += elapsed;
     }
 
-    // calculate the average path cost and elapsed time
+    // calculate the average path cost and elapsed time for the instance
 
     double avgPathCost = totalPathCost / 5;
     double avgElapsedTime = totalElapsedTime / 5;
@@ -82,8 +82,6 @@ int main(int argc, char* argv[]) {
     string folderPath = argv[1];
     bool useCenterCity = stoi(argv[2]);
 
-    cout << folderPath << endl;
-    cout << useCenterCity << endl;
 
     // Process all .tsp files in the folder
     for (const auto& entry : fs::directory_iterator(folderPath)) {

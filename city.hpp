@@ -5,6 +5,8 @@
 #include <vector>
 #include <cmath>
 
+// class to handle city information and perform calculations about distances
+
 class City {
     private:
         int id;
