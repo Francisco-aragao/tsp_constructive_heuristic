@@ -53,8 +53,8 @@ void processFile(const string& filename, bool useCenterCity) {
 
     // calculate the average path cost and elapsed time for the instance
 
-    double avgPathCost = totalPathCost / 5;
-    double avgElapsedTime = totalElapsedTime / 5;
+    double avgPathCost = totalPathCost / NUMBER_OF_ITERATIONS;
+    double avgElapsedTime = totalElapsedTime / NUMBER_OF_ITERATIONS;
 
     vector<int> path = utils.getPath();
 
