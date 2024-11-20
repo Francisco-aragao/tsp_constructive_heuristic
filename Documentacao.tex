@@ -26,7 +26,7 @@
 
 O presente trabalho busca resolver de maneira aproximada o problema do caixeiro viajante (TSP), fazendo uso de heurísticas gulosas em sua implementação. Como o problema pertence a classe NP, faz-se necessário o uso de tais estratégias, sendo feito especificamente uma heurística gulosa no trabalho. Abaixo encontra-se mais informações sobre a implementação além dos resultados obtidos.
 
-\section{Heurística utilizada}
+\section{Heurísticas utilizadas}
 
 Primeiramente sobre a heurística utilizada, a estratégia implementada no trabalho refere-se a heurísticas construtivas, ou seja, heurísticas em que a solução é construída do zero, desde o início até a resolução do problema. Iniciando-se assim de uma solução vazia, obtendo-se uma solução parcial a cada iteração em que ao final transforma-se em uma solução completa válida.
 
@@ -50,37 +50,15 @@ make run ARGS="<pasta com instâncias de entrada> <tipo da cidade inicial>
 // <tipo de cidade inicial> = 0 para usar a primeira cidade e 1 para usar cidade central
 \end{minted}
 
-Vale destacar que o arquivo de entrada foi encontrado no site TSPLIB95, presente nas referências no trabalho. Além disso, a execução foi realizada 5 vezes para cada instância, com as médias dos resultados disponível nas tabelas abaixo. O algoritmo guloso implementado em ambas as versões são exatos, não obtendo mudanças entre as execuções, então a média dos resultados foi obtida para encontrar o valor médio do tempo de execução.
+Vale destacar que os arquivos de entrada foram encontrados no site TSPLIB95, presente nas referências no trabalho, com o projeto executando apenas as instâncias que terminam com a extensão '.tsp'. Além disso, a execução foi realizada 5 vezes para cada instância, com as médias dos resultados disponível nas tabelas abaixo. O algoritmo guloso implementado em ambas as versões são exatos, não obtendo mudanças entre as execuções, então a média dos resultados foi obtida para encontrar o valor médio do tempo de execução.
 
-Assim, os resultados encontrados para cada abordagem foram sumarizados nas tabelas 3 e 4. É possível notar que ambas as estratégias obteram resultados semelhantes, com pouca diferença entre o erro em cada abordagem, mesmo que de maneira geral a segunda estratégia baseada no nó geral tenha obtido melhores resultados de custo na média. Sobre isso, os valores de custo foram no máximo 50\% piores do que o ótimo (mais especificamente, o maior erro foi de 41.89\%). Em todo caso, o ponto fundamental que pode ser verificado nos resultados refere-se ao tempo de execução, que ficou bem reduzido nas duas abordagens. Mesmo que a estratégia do nó central tenha obtidos tempo ligeiramente maiores, a diferença é praticamente irrelevante.
+Assim, os resultados encontrados para cada abordagem podem ser encontrados nas tabelas 1 e 2. É possível notar que ambas as estratégias obteram resultados semelhantes, com pouca diferença entre o erro em cada abordagem, mesmo que de maneira geral a segunda estratégia baseada no nó geral tenha obtido melhores resultados de custo na média. Sobre isso, os valores de custo foram no máximo 50\% piores do que o ótimo (mais especificamente, o maior erro foi de 41.89\%). Em todo caso, o ponto fundamental que pode ser verificado nos resultados refere-se ao tempo de execução, que ficou bem reduzido nas duas abordagens. Mesmo que a estratégia do nó central tenha obtidos tempo ligeiramente maiores, a diferença é praticamente irrelevante.
 
-Sumarizando a comparação dos resultados das diferentes abordagens, temos a tabela 5 que possui a melhor abordagem para cada uma das instâncias. Percebe-se que de maneira geral, a estratégia utilizando o nó central como inicio do caminho performou melhor. Mesmo que a abordagem com o primeiro nó como inicial possuindo vantagem em alguns dos casos maiores, a hipótese é que isso foi causado por propriedades de como as instâncias estão distribuídas, embora mais testes possam ser feitos para comprovar tal fato futuramente. Em todo caso, foi testado para uma instância adicional maior ambas as abordagens, em um problema envolvendo 3795 cidades, com os resultados mostrados abaixo na tabela 1 e 2. Assim, em um primeiro momento, existe a ideía que escolher o nó central como inicial possui melhores resultados ao se extender o problema em maiores instâncias. Porém novamente, mais testes são necessários, além de otimizações na implementação para melhorar tanto o custo obtido quanto o tempo.
 
-\begin{table}[h]
+\begin{table}[H]
     \centering
     \begin{tabular}{|c|c|c|c|c|} \hline 
-         \textbf{Instância} & \textbf{Ótimo} & \textbf{Custo} & \textbf{Tempo} & \textbf{Erro Percentual (\%)} \\ \hline 
-         fl3795       & 28772     & 36841.4    & 114.198  & 28.04 \\ \hline
-    \end{tabular}
-    \caption{Heurística gulosa - Primeiro nó como inicial}
-    \label{tab:my_label}
-\end{table}
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{|c|c|c|c|c|} \hline 
-         \textbf{Instância} & \textbf{Ótimo} & \textbf{Custo} & \textbf{Tempo} & \textbf{Erro Percentual (\%)} \\ \hline 
-         fl3795       & 28772     & 36145.5    & 106.698  & 25.62 \\ \hline
-    \end{tabular}
-    \caption{Heurística gulosa - Nó central como inicial}
-    \label{tab:my_label}
-\end{table}
-
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{|c|c|c|c|c|} \hline 
-         \textbf{Instância} & \textbf{Ótimo} & \textbf{Custo} & \textbf{Tempo} & \textbf{Erro Percentual (\%)} \\ \hline 
+         \textbf{Instância} & \textbf{Ótimo} & \textbf{Custo} & \textbf{Tempo (s)} & \textbf{Erro Percentual (\%)} \\ \hline 
          att48       & 10628     & 12861    & 0.001903  & 21.00 \\ \hline
          berlin52    & 7542      & 8980.92  & 0.0010034 & 19.08 \\ \hline 
          st70        & 675       & 805.531  & 0.0033856 & 19.34 \\ \hline 
@@ -106,7 +84,7 @@ Sumarizando a comparação dos resultados das diferentes abordagens, temos a tab
     \label{tab:my_label}
 \end{table}
 
-\begin{table}[h]
+\begin{table}[H]
     \centering
     \begin{tabular}{|c|c|c|c|c|} \hline 
         \textbf{Instância} & \textbf{Ótimo} & \textbf{Custo} & \textbf{Tempo (s)} & \textbf{Erro Percentual} \\ \hline 
@@ -136,7 +114,9 @@ Sumarizando a comparação dos resultados das diferentes abordagens, temos a tab
     \label{tab:my_label}
 \end{table}
 
-\begin{table}[h]
+Sumarizando a comparação dos resultados das diferentes abordagens, temos a tabela 3 que possui a melhor abordagem para cada uma das instâncias. Percebe-se que de maneira geral, a estratégia utilizando o nó central como inicio do caminho performou melhor. Mesmo que a abordagem com o primeiro nó como inicial possuindo vantagem em alguns dos casos maiores, a hipótese é que isso foi causado por propriedades de como as instâncias estão distribuídas, embora mais testes possam ser feitos para comprovar tal fato futuramente. 
+
+\begin{table}[H]
 \centering
 \begin{tabular}{|c|c|c|} \hline
 \textbf{Instância} & \textbf{Menor Erro Percentual} & \textbf{Abordagem} \\ \hline
@@ -166,6 +146,27 @@ Sumarizando a comparação dos resultados das diferentes abordagens, temos a tab
 \label{tab:comparison}
 \end{table}
 
+Em todo caso, foi testado para uma instância adicional maior ambas as abordagens, em um problema envolvendo 3795 cidades, com os resultados mostrados abaixo nas tabelas 4 e 5. Percebe-se que mesmo para instâncias grandes em que o problema já se torna intratável (de maneira exata), as abordagens gulosas conseguem retornar resultados em tempo viável. Assim, em um primeiro momento, existe a ideía que escolher o nó central como inicial possui melhores resultados ao se extender o problema em maiores instâncias. Porém novamente, mais testes são necessários, além de otimizações na implementação para melhorar tanto o custo obtido quanto o tempo.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|} \hline 
+         \textbf{Instância} & \textbf{Ótimo} & \textbf{Custo} & \textbf{Tempo (s)} & \textbf{Erro Percentual (\%)} \\ \hline 
+         fl3795       & 28772     & 36841.4    & 114.198  & 28.04 \\ \hline
+    \end{tabular}
+    \caption{Heurística gulosa - Primeiro nó como inicial}
+    \label{tab:my_label}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|} \hline 
+         \textbf{Instância} & \textbf{Ótimo} & \textbf{Custo} & \textbf{Tempo (s)} & \textbf{Erro Percentual (\%)} \\ \hline 
+         fl3795       & 28772     & 36145.5    & 106.698  & 25.62 \\ \hline
+    \end{tabular}
+    \caption{Heurística gulosa - Nó central como inicial}
+    \label{tab:my_label}
+\end{table}
 
 \section{Referências}
 
